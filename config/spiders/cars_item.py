@@ -5,7 +5,7 @@ class CarsItemSpider(scrapy.Spider):
     name = 'cars_item'
     allowed_domains = ['khodro45.com']
     start_urls = ['https://khodro45.com/used-car']
-    cars_crawled_count = 0
+    # cars_crawled_count = 0
     def parse(self, response):
         for page_index in range(1,6):
             link = f"https://khodro45.com/api/v2/car_listing/?page={page_index}&ordering=-created_time"
@@ -15,9 +15,7 @@ class CarsItemSpider(scrapy.Spider):
 
     def get_details(self, response):
         res = json.loads(response.text)
-        self.cars_crawled_count += int(res["count"])
-        page_th = int(self.cars_crawled_count / int(res["count"]))
-        yield {
-            f"cars_{page_th}th_page" : res["results"],
-            f"cars_{page_th}th_crawled_count" : self.cars_crawled_count
-            }
+        # self.cars_crawled_count += int(res["count"])
+        yield { 
+                f"cars_details" : res["results"],
+        }
