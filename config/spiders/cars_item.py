@@ -21,6 +21,12 @@ class CarsItemSpider(scrapy.Spider):
 
         for car in cars_details:
             # for car in car_item['cars_details']:
+            car_url_data ={
+                'brand_slug' : car['car_properties']['brand']['url_slug'],
+                'model_slug' : car['car_properties']['model']['url_slug'],
+                'city_en' : car['city']['title_en'],
+                'slug' : car['slug'],
+            }
             car_dict = {
                 'id' : car['identifier'],
                 'slug' : car['slug'],
@@ -33,8 +39,10 @@ class CarsItemSpider(scrapy.Spider):
                 # car properties
                 'brand_fa' : car['car_properties']['brand']['title'],
                 'brand_en' : car['car_properties']['brand']['title_en'],
+                'brand_slug' : car['car_properties']['brand']['url_slug'],
                 "model_fa" : car['car_properties']['model']['title'],
                 "model_en" : car['car_properties']['model']['title_en'],
+                'model_slug' : car['car_properties']['model']['url_slug'],
                 'year' : car['car_properties']['year'],
 
                 # car city
@@ -48,7 +56,10 @@ class CarsItemSpider(scrapy.Spider):
                 # car image
                 'image_id'  : car['image']['id'],
                 'image_file' : car['image']['file'],
-                'image_file_high' : car['image']['file_high']
+                'image_file_high' : car['image']['file_high'],
+
+                # car url
+                'url' : f"https://khodro45.com/used-car/{car_url_data['brand_slug']}-{car_url_data['model_slug']}/{car_url_data['city_en']}/cla-{car_url_data['slug']}/"
             }
             # add car to the list of car dictionaries
             yield { "res" : car_dict }
